@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
-from .models import Item, UserRegistration, CharityRegistration
+from .models import Item, UserRegistration, CharityRegistration, OrderItem
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -18,6 +18,12 @@ class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
         fields  = ['ItemId', 'ItemName', 'Quantity', 'Cat', 'Charity']
+
+
+class ItemOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields  = ['ItemId', 'ItemName', 'Quantity', 'Username']
 
 
 class CharityRegistrationSerializer(serializers.HyperlinkedModelSerializer):

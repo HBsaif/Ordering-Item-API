@@ -31,3 +31,13 @@ class UserRegistration(models.Model):
 
     def __str__(self):
         return self.Username
+
+class OrderItem(models.Model):
+    ItemId = models.ForeignKey('Item', on_delete=models.CASCADE)
+    OrderDate = models.DateTimeField(auto_now_add=True, blank=True)
+    ItemName = models.CharField(max_length=200)
+    Quantity = models.IntegerField()
+    Username = models.EmailField()
+
+    def __str__(self):
+        return self.Username

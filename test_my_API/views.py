@@ -1,8 +1,9 @@
 from django.contrib.auth.models import User, Group
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework import permissions
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from test_my_API.serializers import CharityGetAllSerializer, UserLoginSerializer, CharityLoginSerializer, UserSerializer, GroupSerializer, ItemSerializer, CharityRegistrationSerializer, UserRegistrationSerializer
+from test_my_API.serializers import ItemOrderSerializer, CharityGetAllSerializer, UserLoginSerializer, CharityLoginSerializer, UserSerializer, GroupSerializer, ItemSerializer, CharityRegistrationSerializer, UserRegistrationSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -141,3 +142,40 @@ def get_all_items_by_email(request):
     serializer = ItemSerializer(items, many=True)
 
     return Response(serializer.data)
+
+
+# @api_view(['POST'])
+# def order_item(request):
+#     serializer = ItemOrderSerializer(data=request.data)
+#     if serializer.is_valid():
+#         itemId = serializer.data['ItemId']
+#         quantity = serializer.data['Quantity']
+#         item = Item.objects.filter(ItemId=itemId)
+#         if item:
+#             if quantity <= item[0].Quantity:
+#                 q = Item.objects.filter(ItemId=itemId)
+#                 Item.objects.filter(ItemId=itemId) -= quantity
+#                 serializer.save()
+#                 return Response({"Status":"Ordered"}, status=status.HTTP_201_CREATED)
+#             else:
+#                 return Response({"Status":"Not enough quantity item"}, status=status.HTTP_400_BAD_REQUEST)
+
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def order_item(request):
+    serializer = ItemOrderSerializer(data=request.data)
+    if serializer.is_valid():
+        itemId = serializer.validated_data['ItemId'].ItemId
+        print(itemId)
+        quantity = serializer.validated_data['Quantity']
+
+        item = get_object_or_404(Item, ItemId=itemId)
+        if quantity > item.Quantity:
+            return Response({"status":"Not enough quantity item"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            item.Quantity -= quantity
+            item.save()
+            serializer.save()
+            return Response({"status":"Ordered"}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
