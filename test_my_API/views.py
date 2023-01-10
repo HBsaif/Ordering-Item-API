@@ -133,3 +133,11 @@ def get_all_charities(request):
     serializer = CharityGetAllSerializer(charities, many=True)
 
     return Response(serializer.data)
+
+@api_view(['GET'])
+def get_all_charities_by_email(request):
+    email = request.data['Email']
+    charities = CharityRegistration.objects.filter(Email=email)
+    serializer = CharityGetAllSerializer(charities, many=True)
+
+    return Response(serializer.data)

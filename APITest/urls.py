@@ -17,7 +17,7 @@ from django.contrib import admin
 
 from django.urls import include, path
 from rest_framework import routers
-from test_my_API.views import UserViewSet, GroupViewSet, get_item, add_item, item_details, register_new_charity, login_new_charity, register_new_user, login_new_user, get_all_charities
+from test_my_API.views import UserViewSet, GroupViewSet, get_item, add_item, item_details, register_new_charity, login_new_charity, register_new_user, login_new_user, get_all_charities, get_all_charities_by_email
 from rest_framework.authtoken import views
 
 router = routers.DefaultRouter()
@@ -38,6 +38,7 @@ urlpatterns = [
     path('login_charity/', login_new_charity),
     path('login_user/', login_new_user),
     path('get_all_charities/', get_all_charities),
+    path('get_all_charities_by_email/', get_all_charities_by_email),
 
 ]
 
