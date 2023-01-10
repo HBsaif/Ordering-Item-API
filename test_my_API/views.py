@@ -135,9 +135,9 @@ def get_all_charities(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def get_all_charities_by_email(request):
+def get_all_items_by_email(request):
     email = request.data['Email']
-    charities = CharityRegistration.objects.filter(Email=email)
-    serializer = CharityGetAllSerializer(charities, many=True)
+    items = Item.objects.filter(Charity=email)
+    serializer = ItemSerializer(items, many=True)
 
     return Response(serializer.data)
