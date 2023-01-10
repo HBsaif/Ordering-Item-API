@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from rest_framework import permissions
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
-from test_my_API.serializers import UserLoginSerializer, CharityLoginSerializer, UserSerializer, GroupSerializer, ItemSerializer, CharityRegistrationSerializer, UserRegistrationSerializer
+from test_my_API.serializers import CharityGetAllSerializer, UserLoginSerializer, CharityLoginSerializer, UserSerializer, GroupSerializer, ItemSerializer, CharityRegistrationSerializer, UserRegistrationSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
@@ -127,3 +127,9 @@ def login_new_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def get_all_charities(request):
+    charities = CharityRegistration.objects.all()
+    serializer = CharityGetAllSerializer(charities, many=True)
+
+    return Response(serializer.data)

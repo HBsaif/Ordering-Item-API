@@ -30,6 +30,11 @@ class CharityLoginSerializer(serializers.HyperlinkedModelSerializer):
         model = CharityRegistration
         fields = ['Email', 'Password']
 
+class CharityGetAllSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = CharityRegistration
+        fields = ['Email', 'CharityName', 'City']
+
 class UserRegistrationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserRegistration
